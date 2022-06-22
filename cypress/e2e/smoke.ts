@@ -1,48 +1,40 @@
-import faker from "@faker-js/faker";
-
 describe("smoke tests", () => {
-  afterEach(() => {
-    cy.cleanupUser();
-  });
-
-  it("should allow you to register and login", () => {
-    const loginForm = {
-      email: `${faker.internet.userName()}@example.com`,
-      password: faker.internet.password(),
-    };
-    cy.then(() => ({ email: loginForm.email })).as("user");
-
-    cy.visit("/");
-    cy.findByRole("link", { name: /sign up/i }).click();
-
-    cy.findByRole("textbox", { name: /email/i }).type(loginForm.email);
-    cy.findByLabelText(/password/i).type(loginForm.password);
-    cy.findByRole("button", { name: /create account/i }).click();
-
-    cy.findByRole("link", { name: /notes/i }).click();
-    cy.findByRole("button", { name: /logout/i }).click();
-    cy.findByRole("link", { name: /log in/i });
-  });
-
-  it("should allow you to make a note", () => {
-    const testNote = {
-      title: faker.lorem.words(1),
-      body: faker.lorem.sentences(1),
-    };
-    cy.login();
+  it("should load home page with links", () => {
     cy.visit("/");
 
-    cy.findByRole("link", { name: /notes/i }).click();
-    cy.findByText("No notes yet");
+    cy.get(".mantine-Title-root > a")
+      .contains("M.RGB")
+      .should("have.attr", "href", "/");
+    cy.get(".mantine-Title-root>a")
+      .contains("posts")
+      .should("have.attr", "href", "/posts");
+    cy.get(".mantine-Title-root>a")
+      .contains("categories")
+      .should("have.attr", "href", "/categories");
 
-    cy.findByRole("link", { name: /\+ new note/i }).click();
+    cy.contains("Ram Gopal");
+  });
 
-    cy.findByRole("textbox", { name: /title/i }).type(testNote.title);
-    cy.findByRole("textbox", { name: /body/i }).type(testNote.body);
-    cy.findByRole("button", { name: /save/i }).click();
+  it("should load posts with articles", () => {
+    cy.visit("/posts");
 
-    cy.findByRole("button", { name: /delete/i }).click();
+    cy.get(".nav-posts > a").contains("posts");
+    cy.get(".nav-posts").should("have.css", "color", "rgb(33, 150, 243)");
+    cy.get(".nav-posts").should(
+      "have.css",
+      "border-bottom",
+      "1px solid rgb(33, 150, 243)"
+    );
 
-    cy.findByText("No notes yet");
+    cy.get(".mantine-List-root > li")
+      .should(($lis) => {
+        expect($lis).to.have.length(2);
+      })
+      .get(".mantine-List-root .mantine-Text-root")
+      .should(($txt) => {
+        expect($txt).to.have.length(4);
+      });
+
+    cy.contains("Blog Posts");
   });
 });
