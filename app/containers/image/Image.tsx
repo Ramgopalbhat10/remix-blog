@@ -1,5 +1,5 @@
 import { Badge, Divider, Grid, Group, Image as MImage } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link } from "@remix-run/react";
 import { CloudUpload, Clock } from "tabler-icons-react";
 
 type ImageProps = {
