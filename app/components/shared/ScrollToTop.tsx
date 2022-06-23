@@ -4,7 +4,7 @@ import { ChevronUp } from "tabler-icons-react";
 import { Button } from "~/containers";
 
 export function ScrollToTop() {
-  const [_scroll, scrollTo] = useWindowScroll();
+  const [, scrollTo] = useWindowScroll();
   const [visible, setVisible] = useState(false);
 
   const scrollHandler = (event: Event) => {

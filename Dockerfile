@@ -40,10 +40,9 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL="mysql://mfot6xq3uqbj:pscale_pw_wnEkjp2Ty0OImIQoYgog50uQgyIsAwH7VUOt3MlmgYo@fn20chonacyy.ap-south-2.psdb.cloud/blog?sslaccept=strict"
+# ENV DATABASE_URL='mysql://iifkiapnfd13:pscale_pw_7bjJLOvJBnvSU3seqlmL5iUCI7T4vWjR-W6t-dBdJmk@fn20chonacyy.ap-south-2.psdb.cloud/blog?sslaccept=strict'
 ENV PORT="8080"
 ENV NODE_ENV="production"
-ENV ADMIN_EMAIL="ramgopalbhat10@gmail.com"
 
 # add shortcut for connecting to database CLI
 RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-cli && chmod +x /usr/local/bin/database-cli

@@ -28,7 +28,6 @@ import {
   Container,
   Button as MButton,
 } from "@mantine/core";
-import { Button } from "~/containers";
 import { useForm } from "@mantine/hooks";
 
 export const meta: MetaFunction = () => {

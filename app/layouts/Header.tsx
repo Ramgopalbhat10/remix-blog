@@ -1,13 +1,6 @@
 import type { User } from "@prisma/client";
 import { Link } from "@remix-run/react";
-import {
-  Avatar,
-  Box,
-  Header as MHeader,
-  Image,
-  Space,
-  Title,
-} from "@mantine/core";
+import { Avatar, Box, Header as MHeader, Space, Title } from "@mantine/core";
 
 type Props = {
   user?: User;
