@@ -5,7 +5,9 @@ FROM node:16-bullseye-slim as base
 ENV NODE_ENV production
 
 # Install openssl for Prisma
-RUN apt-get update && apt-get install -y openssl sqlite3
+RUN apt-get update && apt-get install -y openssl ca-certificates
+RUN cp *crt  /usr/local/share/ca-certificates/
+RUN update-ca-certificates
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
