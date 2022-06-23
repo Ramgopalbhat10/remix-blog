@@ -1,3 +1,4 @@
+import type { Sx } from "@mantine/core";
 import { Button as MButton } from "@mantine/core";
 
 type ButtonProps = {
@@ -7,6 +8,8 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   children?: JSX.Element | string;
   value?: "create" | "update" | "delete";
+  sx?: Sx | (Sx | undefined)[] | undefined;
+  onClick?: () => void;
 };
 
 export function Button({
@@ -16,6 +19,8 @@ export function Button({
   type = "button",
   children,
   value,
+  sx,
+  onClick,
 }: ButtonProps) {
   const color = value === "delete" ? "red" : "blue";
   return (
@@ -27,6 +32,8 @@ export function Button({
       type={type}
       variant="filled"
       color={color}
+      sx={sx}
+      onClick={onClick}
     >
       {children && children}
       {title && title}

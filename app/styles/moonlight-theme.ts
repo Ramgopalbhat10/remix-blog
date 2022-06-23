@@ -1,4 +1,4 @@
-export const theme = {
+export const moonLightTheme = {
   name: "Moonlight II",
   type: "dark",
   colors: {

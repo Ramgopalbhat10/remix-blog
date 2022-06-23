@@ -25,7 +25,7 @@ export function Image({
       sx={{
         backgroundColor: "#141517",
         width: "100%",
-        margin: "0 auto",
+        margin: "16px 0 0 0",
       }}
     >
       <Grid.Col

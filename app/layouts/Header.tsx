@@ -1,6 +1,13 @@
 import type { User } from "@prisma/client";
 import { Link } from "@remix-run/react";
-import { Box, Header as MHeader, Space, Title } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Header as MHeader,
+  Image,
+  Space,
+  Title,
+} from "@mantine/core";
 
 type Props = {
   user?: User;
@@ -15,7 +22,7 @@ const setResponsiveStyles = (keys: string[], values: string[]) => {
     mediaStyles[key] = values[index];
   });
   return {
-    "@media (max-width: 755px)": mediaStyles,
+    "@media (max-width: 1024px)": mediaStyles,
   };
 };
 
@@ -24,13 +31,15 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
     <MHeader
       height={60}
       mb={16}
-      p="md"
+      // p="md"
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
-      sx={setResponsiveStyles(["height"], ["60px"])}
+      sx={{
+        ...setResponsiveStyles(["padding"], ["16px"]),
+      }}
     >
       <div
         style={{
@@ -44,8 +53,16 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
           sx={{
             fontSize: 24,
             fontWeight: 500,
+            display: "flex",
           }}
         >
+          <Avatar
+            src="logo.png"
+            sx={{
+              position: "relative",
+              marginRight: 4,
+            }}
+          />
           <Link to="/">M.RGB</Link>
         </Title>
 

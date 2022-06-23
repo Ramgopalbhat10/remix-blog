@@ -16,19 +16,48 @@ import {
 import { Global, MantineProvider, useMantineTheme } from "@mantine/core";
 
 import baseStylesheetUrl from "./styles/base.css";
+import codeHikeStylesheetsUrl from "@code-hike/mdx/dist/index.css";
 import { getUser } from "./server/session.server";
 import { getEnv } from "~/server/env.server";
 import { Footer } from "~/layouts/Footer";
+import { ScrollToTop } from "./components";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: baseStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: baseStylesheetUrl },
+    { rel: "stylesheet", href: codeHikeStylesheetsUrl },
+  ];
 };
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "MRGB | Not a 10X Developer 🧑‍💻",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = ({ data, location, params }) => {
+  const siteName = "https://mrgb.in";
+  const description = "My personal website with blog posts and code snippets.";
+  const ogTitle =
+    location.pathname.slice(1).charAt(0).toUpperCase() +
+    location.pathname.slice(2);
+
+  return {
+    charset: "utf-8",
+    title: "MRGB | Not a 10X Developer 🧑‍💻",
+    description: `${description}`,
+    keywords: "Ramgopal,MRGB,Ramgopal Bhat,programming,software development",
+
+    "og:type": "article",
+    "og:title": `${ogTitle}`,
+    "og:description": `${description}`,
+    "og:url": `${siteName}${location.pathname}`,
+    "og:site_name": `${siteName}`,
+    "og:locale": "en_US",
+
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@Batmansubbu",
+    "twitter:site": "@Batmansubbu",
+    "twitter:title": "MRGB | Not a 10X Developer 🧑‍💻",
+    "twitter:description": `${description}`,
+
+    viewport: "width=device-width,initial-scale=1",
+  };
+};
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
@@ -77,6 +106,7 @@ export default function App() {
         <MantineProvider theme={{ colorScheme: "dark" }}>
           <Outlet />
           <Footer />
+          <ScrollToTop />
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />

@@ -1,5 +1,5 @@
 import { getMDXComponent } from "mdx-bundler/client";
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getPost } from "~/models/post.server";
@@ -25,6 +25,23 @@ type LoaderData = {
   code: string;
   frontmatter: Frontmatter;
   readTime: ReadTimeResults;
+};
+
+export const meta: MetaFunction = ({
+  data,
+}: {
+  data: LoaderData | undefined;
+}) => {
+  if (!data) {
+    return {
+      title: "Oops 🤭 | Not found",
+      description: "Post not found.",
+    };
+  }
+  return {
+    title: `${data.title}`,
+    description: `${data.frontmatter.description}`,
+  };
 };
 
 export const loader: LoaderFunction = async ({ params }) => {

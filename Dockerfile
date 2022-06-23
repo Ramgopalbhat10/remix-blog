@@ -40,7 +40,7 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL=file:/data/sqlite.db
+ENV DATABASE_URL="mysql://mfot6xq3uqbj:pscale_pw_wnEkjp2Ty0OImIQoYgog50uQgyIsAwH7VUOt3MlmgYo@fn20chonacyy.ap-south-2.psdb.cloud/blog?sslaccept=strict"
 ENV PORT="8080"
 ENV NODE_ENV="production"
 ENV ADMIN_EMAIL="ramgopalbhat10@gmail.com"

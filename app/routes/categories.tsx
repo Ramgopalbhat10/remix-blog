@@ -1,5 +1,9 @@
 import { Chip, Chips, Container, Text } from "@mantine/core";
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Outlet,
@@ -14,8 +18,15 @@ import {
   useStylesCategories,
   useStylesHeadingTitle,
 } from "~/styles/mantine-styles";
-
 import categoriesStyles from "~/styles/routes/categories.css";
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Blog Categories | MRGB",
+    description:
+      "All blog posts related to software engineering and programming filtered by their categories.",
+  };
+};
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: categoriesStyles }];
