@@ -34,7 +34,6 @@ WORKDIR /myapp
 COPY --from=deps /myapp/node_modules /myapp/node_modules
 
 ADD prisma .
-RUN npx prisma migrate dev
 RUN npx prisma generate
 
 ADD . .
@@ -43,7 +42,6 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-# ENV DATABASE_URL='mysql://iifkiapnfd13:pscale_pw_7bjJLOvJBnvSU3seqlmL5iUCI7T4vWjR-W6t-dBdJmk@fn20chonacyy.ap-south-2.psdb.cloud/blog?sslaccept=strict'
 ENV PORT="8080"
 ENV NODE_ENV="production"
 
