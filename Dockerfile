@@ -6,8 +6,8 @@ ENV NODE_ENV production
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl ca-certificates
-RUN cp *crt  /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN apt-get install -y -q
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
