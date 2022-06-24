@@ -47,6 +47,7 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
             fontSize: 24,
             fontWeight: 500,
             display: "flex",
+            alignItems: "center",
           }}
         >
           <Avatar

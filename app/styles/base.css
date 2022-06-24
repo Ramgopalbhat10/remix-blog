@@ -86,6 +86,7 @@ code:not([data-theme]) {
   background-color: #141517;
   border: 1px solid #282828;
   color: #ff7777;
+  overflow-y: hidden !important;
 }
 em {
   padding: 0 4px;
