@@ -50,7 +50,7 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
           }}
         >
           <Avatar
-            src="logo.png"
+            src="/logo.png"
             sx={{
               position: "relative",
               marginRight: 4,
