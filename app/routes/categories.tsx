@@ -19,6 +19,7 @@ import {
   useStylesHeadingTitle,
 } from "~/styles/mantine-styles";
 import categoriesStyles from "~/styles/routes/categories.css";
+import { CACHE_CONTROL } from "~/utils/constants";
 
 export const meta: MetaFunction = () => {
   return {
@@ -43,7 +44,7 @@ export const loader: LoaderFunction = async () => {
     { categories },
     {
       headers: {
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": CACHE_CONTROL,
       },
     }
   );

@@ -10,6 +10,7 @@ import { DefaultCatchBoundary, Image } from "~/containers";
 import { TableOfContents } from "~/components";
 import type { ReadTimeResults } from "reading-time";
 import readingTime from "reading-time";
+import { CACHE_CONTROL } from "~/utils/constants";
 
 type Frontmatter = {
   categories: string[];
@@ -60,7 +61,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     { title: post.title, code, frontmatter, readTime },
     {
       headers: {
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": CACHE_CONTROL,
       },
     }
   );

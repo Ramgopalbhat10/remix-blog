@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { PostList } from "~/containers";
 import type { Post } from "~/models/post.server";
 import { getPostsByCategories } from "~/models/post.server";
+import { CACHE_CONTROL } from "~/utils/constants";
 
 type LoaderData = {
   posts: Pick<Post, "slug" | "title" | "categories" | "updatedAt">[];
@@ -22,7 +23,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     { posts },
     {
       headers: {
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": CACHE_CONTROL,
       },
     }
   );

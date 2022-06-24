@@ -54,8 +54,9 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
             src="/logo.png"
             sx={{
               position: "relative",
-              marginRight: 4,
+              left: "-6px",
             }}
+            alt="logo"
           />
           <Link to="/">M.RGB</Link>
         </Title>

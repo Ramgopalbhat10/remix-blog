@@ -12,20 +12,27 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useTransition,
 } from "@remix-run/react";
 import { Global, MantineProvider, useMantineTheme } from "@mantine/core";
 
-import baseStylesheetUrl from "./styles/base.css";
+import baseStylesheetUrl from "~/styles/base.css";
+import nprogressStylesUrl from "nprogress/nprogress.css";
 import codeHikeStylesheetsUrl from "@code-hike/mdx/dist/index.css";
-import { getUser } from "./server/session.server";
+import { getUser } from "~/server/session.server";
 import { getEnv } from "~/server/env.server";
 import { Footer } from "~/layouts/Footer";
-import { ScrollToTop } from "./components";
+import { ScrollToTop } from "~/components";
+import { CACHE_CONTROL } from "~/utils/constants";
+import { useEffect } from "react";
+import Nprogress from "nprogress";
+import { MetronomeLinks } from "@metronome-sh/react";
 
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: baseStylesheetUrl },
     { rel: "stylesheet", href: codeHikeStylesheetsUrl },
+    { rel: "stylesheet", href: nprogressStylesUrl },
   ];
 };
 
@@ -65,22 +72,39 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return json<LoaderData>({
-    user: await getUser(request),
-    ENV: getEnv(),
-  });
+  return json<LoaderData>(
+    {
+      user: await getUser(request),
+      ENV: getEnv(),
+    },
+    {
+      headers: {
+        "Cache-Control": CACHE_CONTROL,
+      },
+    }
+  );
 };
 
 export default function App() {
   const data = useLoaderData();
   const theme = useMantineTheme();
   theme.colorScheme = "dark";
+  const transition = useTransition();
+
+  useEffect(() => {
+    if (transition.state === "loading" || transition.state === "submitting") {
+      Nprogress.start();
+    } else {
+      Nprogress.done();
+    }
+  }, [transition.state]);
 
   return (
     <html lang="en">
       <head>
         <Meta />
         <Links />
+        <MetronomeLinks />
       </head>
       <body>
         <Global

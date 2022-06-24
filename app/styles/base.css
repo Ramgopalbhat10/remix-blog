@@ -119,6 +119,9 @@ em {
 
 
 /* Mantine styles */
+.mantine-Header-root {
+  margin-top: 2px;
+}
 .mantine-Image-image {
   max-height: 80px;
 }
@@ -139,4 +142,9 @@ li[data-tag="H3"]:hover a, li[data-tag="H2"]:hover a {
   font-size: 0.8rem !important;
   padding: 0 !important;
   border-radius: 0 !important;
+}
+
+/* progress bar */
+#nprogress .spinner {
+  top: 97% !important;
 }

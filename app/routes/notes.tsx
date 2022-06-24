@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { requireUserId } from "~/server/session.server";
-import { useUser } from "~/utils";
+import { useUser } from "~/utils/utils";
 import { getNoteListItems } from "~/models/note.server";
 import { Header } from "~/layouts/Header";
 

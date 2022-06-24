@@ -7,6 +7,7 @@ import { DefaultErrorBoundary } from "~/containers/error/DefaultErrorBoundary";
 import { Breadcrumbs, List, Space, Text } from "@mantine/core";
 import { useStylesHeadingTitle } from "~/styles/mantine-styles";
 import { PostList } from "~/containers";
+import { CACHE_CONTROL } from "~/utils/constants";
 
 type LoaderData = {
   posts: Awaited<ReturnType<typeof getPostListings>>;
@@ -18,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     { posts: await getPostListings() },
     {
       headers: {
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": CACHE_CONTROL,
       },
     }
   );
