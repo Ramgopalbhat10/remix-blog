@@ -1,5 +1,5 @@
 import { Button, List, Space, Text } from "@mantine/core";
-import type { LoaderFunction } from "@remix-run/node";
+import type { HeadersFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getPostListings } from "~/models/post.server";
@@ -22,6 +22,12 @@ export const loader: LoaderFunction = async () => {
       },
     }
   );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function PostsRoute() {

@@ -1,6 +1,14 @@
 import { Header } from "~/layouts/Header";
 import { Container, Text } from "@mantine/core";
 import { useStylesHomePage } from "~/styles/mantine-styles";
+import type { HeadersFunction } from "@remix-run/node";
+import { CACHE_CONTROL } from "~/utils/constants";
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": CACHE_CONTROL,
+  };
+};
 
 export default function Index() {
   const { classes } = useStylesHomePage();

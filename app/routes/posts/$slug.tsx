@@ -1,5 +1,9 @@
 import { getMDXComponent } from "mdx-bundler/client";
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type {
+  HeadersFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getPost } from "~/models/post.server";
@@ -65,6 +69,12 @@ export const loader: LoaderFunction = async ({ params }) => {
       },
     }
   );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function PostRoute() {

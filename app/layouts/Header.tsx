@@ -1,6 +1,7 @@
 import type { User } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import { Avatar, Box, Header as MHeader, Space, Title } from "@mantine/core";
+import logo from "~/assets/images/logo.png";
 
 type Props = {
   user?: User;
@@ -51,7 +52,7 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
           }}
         >
           <Avatar
-            src="/logo.png"
+            src={logo}
             sx={{
               position: "relative",
               left: "-6px",

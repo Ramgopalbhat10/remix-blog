@@ -1,5 +1,6 @@
 import { Chip, Chips, Container, Text } from "@mantine/core";
 import type {
+  HeadersFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
@@ -48,6 +49,12 @@ export const loader: LoaderFunction = async () => {
       },
     }
   );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function CategoriesRoute() {

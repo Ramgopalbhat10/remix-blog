@@ -1,4 +1,5 @@
 import type {
+  HeadersFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
@@ -83,6 +84,12 @@ export const loader: LoaderFunction = async ({ request }) => {
       },
     }
   );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function App() {
