@@ -15,7 +15,12 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
-import { Global, MantineProvider, useMantineTheme } from "@mantine/core";
+import {
+  Global,
+  MantineProvider,
+  Transition,
+  useMantineTheme,
+} from "@mantine/core";
 
 import baseStylesheetUrl from "~/styles/base.css";
 import nprogressStylesUrl from "nprogress/nprogress.css";
@@ -135,7 +140,18 @@ export default function App() {
           }}
         />
         <MantineProvider theme={{ colorScheme: "dark" }}>
-          <Outlet />
+          <Transition
+            mounted={true}
+            transition="fade"
+            duration={400}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <div style={{ ...styles, flex: 1 }}>
+                <Outlet />
+              </div>
+            )}
+          </Transition>
           <Footer />
           <ScrollToTop />
         </MantineProvider>

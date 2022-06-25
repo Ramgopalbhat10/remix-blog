@@ -12,14 +12,13 @@ import invariant from "tiny-invariant";
 import React from "react";
 import { DefaultCatchBoundary, Image } from "~/containers";
 import { TableOfContents } from "~/components";
-import type { ReadTimeResults } from "reading-time";
 import { CACHE_CONTROL } from "~/utils/constants";
 
 type LoaderData = {
   title: string;
   code: string;
   frontmatter: Frontmatter;
-  readTime?: ReadTimeResults;
+  readTime?: string;
 };
 
 export const meta: MetaFunction = ({
@@ -44,7 +43,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   invariant(slug, "slug is required");
 
   const cachedPost = await getPostInCache(slug);
-
   if (!cachedPost) {
     throw new Error("Post not found");
   }
@@ -77,7 +75,7 @@ export default function PostRoute() {
         title={title}
         blogCategories={frontmatter?.categories}
         dateUpdated={frontmatter?.date}
-        readTime={readTime?.text}
+        readTime={readTime}
       />
       <TableOfContents />
       <Component />
