@@ -1,7 +1,24 @@
 import type { Post } from "@prisma/client";
-import { prisma } from "~/server/db.server";
+import { getCompiledMdx } from "~/server/compile-mdx.server";
+import { prisma, redis } from "~/server/db.server";
 
 export type { Post };
+
+export type Frontmatter = {
+  categories: string[];
+  date: string;
+  description: string;
+  heroImageAlt?: string;
+  thumbnailImageAlt: string;
+  title: string;
+  readTime: string;
+};
+
+export type PostCache = {
+  code: string;
+  frontmatter: Frontmatter;
+  readTime: string;
+};
 
 export async function getPostListings() {
   return prisma.post.findMany({
@@ -47,7 +64,24 @@ export async function getPostsByCategories(category: string) {
 export async function getPost(slug: string) {
   return prisma.post.findUnique({
     where: { slug },
+    select: {
+      title: true,
+      slug: true,
+      updatedAt: true,
+      categories: true,
+    },
   });
+}
+
+export async function getPostWithMarkdown(slug: string) {
+  return prisma.post.findUnique({
+    where: { slug },
+  });
+}
+
+export async function getPostInCache(slug: string) {
+  const cachePost = await redis.hget<PostCache>("posts", slug);
+  return cachePost;
 }
 
 export async function createPost(
@@ -58,7 +92,28 @@ export async function createPost(
     ...post,
     markdown,
   };
-  return prisma.post.create({ data: newPost });
+  const createdPost = prisma.post.create({ data: newPost });
+
+  // store cache in Redis
+  await createPostInCache(post.markdown);
+  return createdPost;
+}
+
+export async function createPostInCache(markdown: string) {
+  const compiledMdx = await getCompiledMdx(markdown);
+  const { frontmatter } = compiledMdx;
+
+  const cacheResult = await redis.hset("posts", {
+    [frontmatter["slug"]]: compiledMdx,
+  });
+
+  if (cacheResult === 0) {
+    return `Updated post 📃 ${frontmatter["title"]} in redis cache`;
+  } else if (cacheResult === 1) {
+    return `Created post 📃 ${frontmatter["title"]} in redis cache`;
+  } else {
+    return `Neither updated not created post 📃 ${frontmatter["title"]} in redis cache`;
+  }
 }
 
 export async function updatePost(
@@ -70,9 +125,26 @@ export async function updatePost(
     ...post,
     markdown,
   };
-  return prisma.post.update({ data: newPost, where: { slug } });
+  const updatedPost = prisma.post.update({ data: newPost, where: { slug } });
+
+  // store chache in Redis
+  await updatePostInCache(slug, post.markdown);
+  return updatedPost;
+}
+
+export async function updatePostInCache(slug: string, markdown: string) {
+  const compiledMdx = await getCompiledMdx(markdown);
+  const { frontmatter } = compiledMdx;
+
+  // delete the existing slug key and add new one in Redis
+  await redis.hdel("posts", slug);
+  await redis.hset("posts", {
+    [frontmatter["slug"]]: compiledMdx,
+  });
 }
 
 export async function deletePost(slug: string) {
+  // delet data in both Redis and DB
+  await redis.hdel("posts", slug);
   return prisma.post.delete({ where: { slug } });
 }

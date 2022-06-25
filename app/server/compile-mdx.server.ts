@@ -4,6 +4,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { h } from "hastscript";
 import path from "path";
 import { moonLightTheme } from "~/styles/moonlight-theme";
+import readingTime from "reading-time";
 const { remarkCodeHike } = require("@code-hike/mdx");
 
 if (process.platform === "win32") {
@@ -25,7 +26,7 @@ if (process.platform === "win32") {
 
 const directory = path.join(process.cwd(), "/app");
 
-export default async function compileMDX(markdown: string) {
+export async function compileMDX(markdown: string) {
   const result = await bundleMDX({
     source: markdown,
     cwd: directory,
@@ -53,4 +54,16 @@ export default async function compileMDX(markdown: string) {
   });
 
   return result;
+}
+
+export async function getCompiledMdx(markdown: string) {
+  const { code, frontmatter } = await compileMDX(markdown);
+  const readTime = readingTime(markdown);
+  const compiledMdx = {
+    code,
+    frontmatter,
+    readTime: readTime.text,
+  };
+
+  return compiledMdx;
 }

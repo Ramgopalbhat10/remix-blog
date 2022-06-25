@@ -6,30 +6,20 @@ import type {
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getPost } from "~/models/post.server";
+import type { Frontmatter, PostCache } from "~/models/post.server";
+import { getPostInCache } from "~/models/post.server";
 import invariant from "tiny-invariant";
 import React from "react";
-import compileMDX from "~/server/compile-mdx.server";
 import { DefaultCatchBoundary, Image } from "~/containers";
 import { TableOfContents } from "~/components";
 import type { ReadTimeResults } from "reading-time";
-import readingTime from "reading-time";
 import { CACHE_CONTROL } from "~/utils/constants";
-
-type Frontmatter = {
-  categories: string[];
-  date: string;
-  description: string;
-  heroImageAlt?: string;
-  thumbnailImageAlt: string;
-  title: string;
-};
 
 type LoaderData = {
   title: string;
   code: string;
   frontmatter: Frontmatter;
-  readTime: ReadTimeResults;
+  readTime?: ReadTimeResults;
 };
 
 export const meta: MetaFunction = ({
@@ -53,16 +43,15 @@ export const loader: LoaderFunction = async ({ params }) => {
   const { slug } = params;
   invariant(slug, "slug is required");
 
-  const post = await getPost(slug);
-  if (!post) {
-    throw new Response("Not Found", { status: 404 });
+  const cachedPost = await getPostInCache(slug);
+
+  if (!cachedPost) {
+    throw new Error("Post not found");
   }
-  const markdown = post.markdown.toString();
-  const readTime = readingTime(markdown);
-  const result = await compileMDX(markdown);
-  const { code, frontmatter } = result;
+
+  const { code, frontmatter, readTime } = cachedPost as PostCache;
   return json(
-    { title: post.title, code, frontmatter, readTime },
+    { title: frontmatter.title, code, frontmatter, readTime },
     {
       headers: {
         "Cache-Control": CACHE_CONTROL,
@@ -88,7 +77,7 @@ export default function PostRoute() {
         title={title}
         blogCategories={frontmatter?.categories}
         dateUpdated={frontmatter?.date}
-        readTime={readTime.text}
+        readTime={readTime?.text}
       />
       <TableOfContents />
       <Component />

@@ -9,7 +9,7 @@ import { redirect, json } from "@remix-run/node";
 import {
   createPost,
   deletePost,
-  getPost,
+  getPostWithMarkdown,
   updatePost,
 } from "~/models/post.server";
 import invariant from "tiny-invariant";
@@ -45,7 +45,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (params.slug === "new") {
     return json({});
   }
-  const postBuffer = await getPost(params.slug);
+  const postBuffer = await getPostWithMarkdown(params.slug);
   const markdown = postBuffer?.markdown.toString();
   const post = {
     ...postBuffer,
