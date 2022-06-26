@@ -34,7 +34,13 @@ export function TableOfContents() {
       <Accordion.Item label="Table of contents">
         <List>
           {contents.map((content, index) => (
-            <List.Item key={index} data-tag={contentTags[index]}>
+            <List.Item
+              key={index}
+              data-tag={contentTags[index]}
+              sx={{
+                color: "#21d3ee",
+              }}
+            >
               <Link to={`#${contentIds[index]}`}>{content}</Link>
             </List.Item>
           ))}

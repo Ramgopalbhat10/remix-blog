@@ -1,4 +1,5 @@
 import type {
+  HeadersFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
@@ -12,23 +13,64 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useTransition,
 } from "@remix-run/react";
-import { Global, MantineProvider, useMantineTheme } from "@mantine/core";
+import {
+  Global,
+  MantineProvider,
+  Transition,
+  useMantineTheme,
+} from "@mantine/core";
 
-import baseStylesheetUrl from "./styles/base.css";
-import { getUser } from "./server/session.server";
+import baseStylesheetUrl from "~/styles/base.css";
+import nprogressStylesUrl from "nprogress/nprogress.css";
+import codeHikeStylesheetsUrl from "@code-hike/mdx/dist/index.css";
+import { getUser } from "~/server/session.server";
 import { getEnv } from "~/server/env.server";
 import { Footer } from "~/layouts/Footer";
+import { ScrollToTop } from "~/components";
+import { CACHE_CONTROL } from "~/utils/constants";
+import { useEffect } from "react";
+import Nprogress from "nprogress";
+import { MetronomeLinks } from "@metronome-sh/react";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: baseStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: baseStylesheetUrl },
+    { rel: "stylesheet", href: codeHikeStylesheetsUrl },
+    { rel: "stylesheet", href: nprogressStylesUrl },
+  ];
 };
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "MRGB | Not a 10X Developer 🧑‍💻",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = ({ data, location, params }) => {
+  const siteName = "https://mrgb.in";
+  const description = "My personal website with blog posts and code snippets.";
+  const ogTitle =
+    location.pathname.slice(1).charAt(0).toUpperCase() +
+    location.pathname.slice(2);
+
+  return {
+    charset: "utf-8",
+    title: "MRGB | Not a 10X Developer 🧑‍💻",
+    description: `${description}`,
+    keywords: "Ramgopal,MRGB,Ramgopal Bhat,programming,software development",
+
+    "og:type": "article",
+    "og:title": `${ogTitle}`,
+    "og:description": `${description}`,
+    "og:url": `${siteName}${location.pathname}`,
+    "og:site_name": `${siteName}`,
+    "og:locale": "en_US",
+
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@Batmansubbu",
+    "twitter:site": "@Batmansubbu",
+    "twitter:title": "MRGB | Not a 10X Developer 🧑‍💻",
+    "twitter:description": `${description}`,
+
+    viewport: "width=device-width,initial-scale=1",
+  };
+};
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
@@ -36,22 +78,45 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return json<LoaderData>({
-    user: await getUser(request),
-    ENV: getEnv(),
-  });
+  return json<LoaderData>(
+    {
+      user: await getUser(request),
+      ENV: getEnv(),
+    },
+    {
+      headers: {
+        "Cache-Control": CACHE_CONTROL,
+      },
+    }
+  );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function App() {
   const data = useLoaderData();
   const theme = useMantineTheme();
   theme.colorScheme = "dark";
+  const transition = useTransition();
+
+  useEffect(() => {
+    if (transition.state === "loading" || transition.state === "submitting") {
+      Nprogress.start();
+    } else {
+      Nprogress.done();
+    }
+  }, [transition.state]);
 
   return (
     <html lang="en">
       <head>
         <Meta />
         <Links />
+        <MetronomeLinks />
       </head>
       <body>
         <Global
@@ -75,8 +140,20 @@ export default function App() {
           }}
         />
         <MantineProvider theme={{ colorScheme: "dark" }}>
-          <Outlet />
+          <Transition
+            mounted={true}
+            transition="fade"
+            duration={400}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <div style={{ ...styles, flex: 1 }}>
+                <Outlet />
+              </div>
+            )}
+          </Transition>
           <Footer />
+          <ScrollToTop />
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />

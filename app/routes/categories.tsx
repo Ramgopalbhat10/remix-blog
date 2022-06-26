@@ -1,5 +1,10 @@
 import { Chip, Chips, Container, Text } from "@mantine/core";
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type {
+  HeadersFunction,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Outlet,
@@ -14,8 +19,16 @@ import {
   useStylesCategories,
   useStylesHeadingTitle,
 } from "~/styles/mantine-styles";
-
 import categoriesStyles from "~/styles/routes/categories.css";
+import { CACHE_CONTROL } from "~/utils/constants";
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Blog Categories | MRGB",
+    description:
+      "All blog posts related to software engineering and programming filtered by their categories.",
+  };
+};
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: categoriesStyles }];
@@ -32,10 +45,16 @@ export const loader: LoaderFunction = async () => {
     { categories },
     {
       headers: {
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": CACHE_CONTROL,
       },
     }
   );
+};
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export default function CategoriesRoute() {
