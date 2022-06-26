@@ -1,5 +1,5 @@
 datasource db {
-  provider             = "postgres"
+  provider             = "sqlite"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
@@ -47,4 +47,6 @@ model Post {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([categories])
 }
