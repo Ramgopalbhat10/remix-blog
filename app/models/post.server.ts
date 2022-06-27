@@ -125,10 +125,14 @@ export async function updatePost(
     ...post,
     markdown,
   };
-  const updatedPost = prisma.post.update({ data: newPost, where: { slug } });
-
+  const updatedPost = await prisma.post.update({
+    data: newPost,
+    where: { slug },
+  });
+  console.log("--------- updated post in DB ---------");
   // store chache in Redis
   await updatePostInCache(slug, post.markdown);
+  console.log("--------- updated post in cache ---------");
   return updatedPost;
 }
 

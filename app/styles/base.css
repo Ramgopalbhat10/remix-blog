@@ -85,7 +85,7 @@ code:not([data-theme]) {
   border-radius: 4px;
   background-color: #141517;
   border: 1px solid #282828;
-  color: #ff7777;
+  color: #fc618d;
   overflow-y: hidden !important;
 }
 em {
@@ -116,13 +116,19 @@ em {
   background-color: #909296;
   border-radius: 8px;
 }
-
+.programming-links {
+  text-decoration: underline;
+  text-decoration-color: #1971c2;
+  color: white;
+}
+/* .programming-links:hover {
+} */
 
 /* Mantine styles */
 .mantine-Header-root {
   margin-top: 2px;
 }
-.mantine-Image-image {
+.postImage .mantine-Image-image {
   max-height: 80px;
 }
 li[data-tag="H3"] {

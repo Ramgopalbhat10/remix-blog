@@ -37,7 +37,7 @@ export function Image({
           alignItems: "center",
         }}
       >
-        <MImage fit="contain" src={src} />
+        <MImage fit="contain" src={src} className="postImage" />
       </Grid.Col>
       <Grid.Col
         span={8}
