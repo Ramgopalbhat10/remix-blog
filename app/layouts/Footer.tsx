@@ -14,7 +14,7 @@ export function Footer() {
         target="_blank"
         aria-label="twitter"
       >
-        <BrandTwitter size={16} />
+        <BrandTwitter size={22} />
       </ActionIcon>
       <ActionIcon
         size="md"
@@ -22,8 +22,11 @@ export function Footer() {
         href="https://github.com/Ramgopalbhat10"
         target="_blank"
         aria-label="github"
+        sx={{
+          margin: "0 16px",
+        }}
       >
-        <BrandGithub size={16} />
+        <BrandGithub size={22} />
       </ActionIcon>
       <ActionIcon
         size="md"
@@ -32,7 +35,7 @@ export function Footer() {
         target="_blank"
         aria-label="linkedin"
       >
-        <BrandLinkedin size={16} />
+        <BrandLinkedin size={22} />
       </ActionIcon>
     </Group>
   );

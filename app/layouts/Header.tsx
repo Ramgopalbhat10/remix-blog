@@ -2,6 +2,7 @@ import type { User } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import { Avatar, Box, Header as MHeader, Space, Title } from "@mantine/core";
 import logo from "~/assets/images/logo.png";
+import { BREAKPOINT } from "~/styles/mantine-styles";
 
 type Props = {
   user?: User;
@@ -56,6 +57,11 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
             sx={{
               position: "relative",
               left: "-6px",
+              [BREAKPOINT]: {
+                width: 32,
+                height: 32,
+                minWidth: 32,
+              },
             }}
             alt="logo"
           />

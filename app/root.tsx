@@ -17,12 +17,7 @@ import {
   useMatches,
   useTransition,
 } from "@remix-run/react";
-import {
-  Global,
-  MantineProvider,
-  Transition,
-  useMantineTheme,
-} from "@mantine/core";
+import { Global, MantineProvider, useMantineTheme } from "@mantine/core";
 import baseStylesheetUrl from "~/styles/base.css";
 import nprogressStylesUrl from "nprogress/nprogress.css";
 import codeHikeStylesheetsUrl from "@code-hike/mdx/dist/index.css";
@@ -89,6 +84,17 @@ export default function App() {
   let location = useLocation();
   let matches = useMatches();
   let isMount = true;
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.innerText = `
+    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
+      __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+    }
+    `;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
   useEffect(() => {
     if (transition.state === "loading" || transition.state === "submitting") {
@@ -160,18 +166,6 @@ export default function App() {
           }}
         />
         <MantineProvider theme={{ colorScheme: "dark" }}>
-          {/* <Transition
-            mounted={true}
-            transition="fade"
-            duration={400}
-            timingFunction="ease"
-          >
-            {(styles) => (
-              <div style={{ ...styles, flex: 1 }}>
-                <Outlet />
-              </div>
-            )}
-          </Transition> */}
           <div style={{ flex: 1 }}>
             <Outlet />
           </div>
