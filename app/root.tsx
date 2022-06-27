@@ -26,7 +26,7 @@ import { getEnv } from "~/server/env.server";
 import { Footer } from "~/layouts/Footer";
 import { ScrollToTop } from "~/components";
 import { CACHE_CONTROL } from "~/utils/constants";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Nprogress from "nprogress";
 import { MetronomeLinks } from "@metronome-sh/react";
 export const links: LinksFunction = () => {
@@ -83,7 +83,7 @@ export default function App() {
 
   let location = useLocation();
   let matches = useMatches();
-  let isMount = true;
+  let isMount = useRef(true);
 
   useEffect(() => {
     if (transition.state === "loading" || transition.state === "submitting") {
@@ -95,7 +95,7 @@ export default function App() {
 
   useEffect(() => {
     let mounted = isMount;
-    isMount = false;
+    isMount.current = false;
     if ("serviceWorker" in navigator) {
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller?.postMessage({
