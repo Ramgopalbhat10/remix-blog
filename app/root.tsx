@@ -86,17 +86,6 @@ export default function App() {
   let isMount = true;
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.innerText = `
-    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
-      __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
-    }
-    `;
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
-  useEffect(() => {
     if (transition.state === "loading" || transition.state === "submitting") {
       Nprogress.start();
     } else {

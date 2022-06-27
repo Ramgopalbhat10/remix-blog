@@ -14,5 +14,6 @@ declare global {
   var ENV: ENV;
   interface Window {
     ENV: ENV;
+    __REACT_DEVTOOLS_GLOBAL_HOOK__: any;
   }
 }

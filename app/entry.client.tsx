@@ -1,11 +1,16 @@
 import { RemixBrowser } from "@remix-run/react";
 import { hydrate } from "react-dom";
+import { disableReactDevTools } from "./utils/disableReactDevTools";
+
+if (process.env.NODE_ENV === "production") disableReactDevTools();
 
 hydrate(<RemixBrowser />, document);
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
