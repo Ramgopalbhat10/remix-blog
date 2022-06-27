@@ -1,5 +1,5 @@
 import { Accordion, List, useMantineTheme } from "@mantine/core";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { useEffect, useState } from "react";
 
 export function TableOfContents() {
@@ -8,6 +8,8 @@ export function TableOfContents() {
   const [contentTags, setContentTags] = useState<string[]>([]);
   const theme = useMantineTheme();
   theme.colorScheme = "dark";
+
+  const location = useLocation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -41,7 +43,9 @@ export function TableOfContents() {
                 color: "#21d3ee",
               }}
             >
-              <Link to={`#${contentIds[index]}`}>{content}</Link>
+              <Link to={`${location.search}#${contentIds[index]}`}>
+                {content}
+              </Link>
             </List.Item>
           ))}
         </List>
