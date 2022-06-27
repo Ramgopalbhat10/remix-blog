@@ -27,8 +27,15 @@ export function PostList({ posts, relativePath = false }: Posts) {
       {posts.map((post) => (
         <List.Item className={linkClasses.links} key={post.slug}>
           <Link
-            to={relativePath ? `/posts/${post.slug}` : post.slug}
+            to={
+              relativePath
+                ? `/posts/${post.slug}?category=${post.categories}`
+                : `${post.slug}?category=${post.categories}`
+            }
             prefetch="intent"
+            state={{
+              category: post.categories,
+            }}
           >
             <div className={postListClasses.wrapper}>
               <div className={postListClasses.inner}>

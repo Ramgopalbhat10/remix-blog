@@ -65,15 +65,17 @@ export const action: ActionFunction = async ({ request, params }) => {
   const intent = formData.get("intent");
   invariant(typeof params.slug === "string", "slug must be a string");
 
+  const categories = formData.get("categories");
+  invariant(categories, "categories must be a string");
+
   if (intent === "delete") {
-    await deletePost(params.slug);
+    await deletePost(params.slug, categories.toString() as string);
     return redirect("/posts/admin");
   }
 
   const title = formData.get("title");
   const slug = formData.get("slug");
   const markdown = formData.get("markdown");
-  const categories = formData.get("categories");
 
   const errors: ActionData = {
     title: title ? null : "Title is required",

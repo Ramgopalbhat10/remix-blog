@@ -79,8 +79,8 @@ export async function getPostWithMarkdown(slug: string) {
   });
 }
 
-export async function getPostInCache(slug: string) {
-  const cachePost = await redis.hget<PostCache>("posts", slug);
+export async function getPostInCache(slug: string, category: string) {
+  const cachePost = await redis.hget<PostCache>(category, slug);
   return cachePost;
 }
 
@@ -103,7 +103,7 @@ export async function createPostInCache(markdown: string) {
   const compiledMdx = await getCompiledMdx(markdown);
   const { frontmatter } = compiledMdx;
 
-  const cacheResult = await redis.hset("posts", {
+  const cacheResult = await redis.hset(`${frontmatter["categories"]}`, {
     [frontmatter["slug"]]: compiledMdx,
   });
 
@@ -137,14 +137,14 @@ export async function updatePostInCache(slug: string, markdown: string) {
   const { frontmatter } = compiledMdx;
 
   // delete the existing slug key and add new one in Redis
-  await redis.hdel("posts", slug);
-  await redis.hset("posts", {
+  await redis.hdel(`${frontmatter["categories"]}`, slug);
+  await redis.hset(`${frontmatter["categories"]}`, {
     [frontmatter["slug"]]: compiledMdx,
   });
 }
 
-export async function deletePost(slug: string) {
+export async function deletePost(slug: string, category: string) {
   // delet data in both Redis and DB
-  await redis.hdel("posts", slug);
+  await redis.hdel(category, slug);
   return prisma.post.delete({ where: { slug } });
 }

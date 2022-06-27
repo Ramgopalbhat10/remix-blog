@@ -38,11 +38,15 @@ export const meta: MetaFunction = ({
   };
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const { slug } = params;
   invariant(slug, "slug is required");
 
-  const cachedPost = await getPostInCache(slug);
+  const url = new URL(request.url);
+  const category = url.searchParams.get("category");
+  invariant(category, "category is required");
+
+  const cachedPost = await getPostInCache(slug, category);
   if (!cachedPost) {
     throw new Error("Post not found");
   }
