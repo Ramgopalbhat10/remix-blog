@@ -154,3 +154,8 @@ li[data-tag="H3"]:hover a, li[data-tag="H2"]:hover a {
 #nprogress .spinner {
   top: 97% !important;
 }
+
+/* codesandbox */
+.sp-layout {
+  border: none !important;
+}

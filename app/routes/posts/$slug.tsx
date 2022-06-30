@@ -6,13 +6,16 @@ import type {
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import type { Frontmatter, PostCache } from "~/models/post.server";
+import type { Frontmatter } from "~/models/post.server";
+import { getPost } from "~/models/post.server";
 import { getPostInCache } from "~/models/post.server";
 import invariant from "tiny-invariant";
 import React from "react";
 import { DefaultCatchBoundary, Image } from "~/containers";
 import { TableOfContents } from "~/components";
 import { CACHE_CONTROL } from "~/utils/constants";
+import { Space } from "@mantine/core";
+import { getCompiledMdx } from "~/server/compile-mdx.server";
 
 type LoaderData = {
   title: string;
@@ -34,7 +37,7 @@ export const meta: MetaFunction = ({
   }
   return {
     title: `${data.title}`,
-    description: `${data.frontmatter.description}`,
+    description: `${data.frontmatter?.description}`,
   };
 };
 
@@ -47,11 +50,20 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   invariant(category, "category is required");
 
   const cachedPost = await getPostInCache(slug, category);
+  let markdown;
+  if (cachedPost?.code) {
+    markdown = cachedPost;
+    console.log("-------- Rendering from cache ---------");
+  } else {
+    const originalPost = await getPost(slug);
+    markdown = await getCompiledMdx(originalPost!.markdown.toString());
+    console.log("-------- Rendering from db ---------");
+  }
   if (!cachedPost) {
     throw new Error("Post not found");
   }
 
-  const { code, frontmatter, readTime } = cachedPost as PostCache;
+  const { code, frontmatter, readTime } = markdown;
   return json(
     { title: frontmatter.title, code, frontmatter, readTime },
     {
@@ -83,6 +95,7 @@ export default function PostRoute() {
       />
       <TableOfContents />
       <Component />
+      <Space h="lg" />
     </main>
   );
 }

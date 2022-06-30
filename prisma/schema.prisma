@@ -40,10 +40,11 @@ model Note {
 }
 
 model Post {
-  slug       String @id
+  slug       String   @id
   title      String
   markdown   Bytes
   categories String
+  compileMdx Boolean?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

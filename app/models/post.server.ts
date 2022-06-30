@@ -69,6 +69,7 @@ export async function getPost(slug: string) {
       slug: true,
       updatedAt: true,
       categories: true,
+      markdown: true,
     },
   });
 }
@@ -85,7 +86,9 @@ export async function getPostInCache(slug: string, category: string) {
 }
 
 export async function createPost(
-  post: Pick<Post, "slug" | "title" | "categories"> & { markdown: string }
+  post: Pick<Post, "slug" | "title" | "categories" | "compileMdx"> & {
+    markdown: string;
+  }
 ) {
   const markdown = Buffer.from(post.markdown, "utf-8");
   const newPost = {
@@ -93,18 +96,19 @@ export async function createPost(
     markdown,
   };
   const createdPost = prisma.post.create({ data: newPost });
+  const shouldCompileMdx = post.compileMdx ? true : false;
 
   // store cache in Redis
-  await createPostInCache(post.markdown);
+  await createPostInCache(post.markdown, shouldCompileMdx);
   return createdPost;
 }
 
-export async function createPostInCache(markdown: string) {
+export async function createPostInCache(markdown: string, compileMdx: boolean) {
   const compiledMdx = await getCompiledMdx(markdown);
   const { frontmatter } = compiledMdx;
 
   const cacheResult = await redis.hset(`${frontmatter["categories"]}`, {
-    [frontmatter["slug"]]: compiledMdx,
+    [frontmatter["slug"]]: compileMdx ? compiledMdx : frontmatter,
   });
 
   if (cacheResult === 0) {
@@ -118,7 +122,9 @@ export async function createPostInCache(markdown: string) {
 
 export async function updatePost(
   slug: string,
-  post: Pick<Post, "slug" | "title" | "categories"> & { markdown: string }
+  post: Pick<Post, "slug" | "title" | "categories" | "compileMdx"> & {
+    markdown: string;
+  }
 ) {
   const markdown = Buffer.from(post.markdown, "utf-8");
   const newPost = {
@@ -129,21 +135,24 @@ export async function updatePost(
     data: newPost,
     where: { slug },
   });
-  console.log("--------- updated post in DB ---------");
+  const shouldCompileMdx = post.compileMdx ? true : false;
   // store chache in Redis
-  await updatePostInCache(slug, post.markdown);
-  console.log("--------- updated post in cache ---------");
+  await updatePostInCache(slug, post.markdown, shouldCompileMdx);
   return updatedPost;
 }
 
-export async function updatePostInCache(slug: string, markdown: string) {
+export async function updatePostInCache(
+  slug: string,
+  markdown: string,
+  compileMdx: boolean
+) {
   const compiledMdx = await getCompiledMdx(markdown);
-  const { frontmatter } = compiledMdx;
+  const { frontmatter, readTime } = compiledMdx;
 
   // delete the existing slug key and add new one in Redis
   await redis.hdel(`${frontmatter["categories"]}`, slug);
   await redis.hset(`${frontmatter["categories"]}`, {
-    [frontmatter["slug"]]: compiledMdx,
+    [frontmatter["slug"]]: compileMdx ? compiledMdx : { frontmatter, readTime },
   });
 }
 

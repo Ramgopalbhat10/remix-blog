@@ -125,7 +125,7 @@ export default function App() {
         };
       }
     }
-  }, [location]);
+  }, [location, matches]);
 
   return (
     <html lang="en">

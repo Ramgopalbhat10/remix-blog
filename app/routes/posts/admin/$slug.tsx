@@ -15,7 +15,7 @@ import {
 import invariant from "tiny-invariant";
 import { requireAdminUser } from "~/server/session.server";
 import { Button, DefaultCatchBoundary } from "~/containers";
-import { Space, Textarea, TextInput, MultiSelect } from "@mantine/core";
+import { Space, Textarea, TextInput, MultiSelect, Switch } from "@mantine/core";
 import { useState } from "react";
 
 type ActionData =
@@ -33,6 +33,7 @@ type LoaderData = {
     slug?: string | undefined;
     title?: string | undefined;
     categories?: string | undefined;
+    compileMdx?: boolean | null | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
   };
@@ -76,6 +77,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const title = formData.get("title");
   const slug = formData.get("slug");
   const markdown = formData.get("markdown");
+  const shouldCompileMdx = formData.get("compileMdx");
 
   const errors: ActionData = {
     title: title ? null : "Title is required",
@@ -92,12 +94,20 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(typeof markdown === "string", "markdown must be a string");
   invariant(typeof categories === "string", "categories must be a string");
 
+  const compileMdx = shouldCompileMdx === "on" ? true : false;
+
   if (params.slug === "new") {
-    await createPost({ title, slug, markdown, categories });
+    await createPost({ title, slug, markdown, categories, compileMdx });
   } else {
-    await updatePost(params.slug, { title, slug, markdown, categories });
+    await updatePost(params.slug, {
+      title,
+      slug,
+      markdown,
+      categories,
+      compileMdx,
+    });
   }
-  return redirect("/posts/admin");
+  return redirect("/posts");
 };
 
 export default function NewPostRoute() {
@@ -152,6 +162,11 @@ export default function NewPostRoute() {
         autosize
         minRows={10}
         maxRows={20}
+      />
+      <Switch
+        label="Compile MDX"
+        name="compileMdx"
+        defaultChecked={post?.compileMdx ? post?.compileMdx : false}
       />
       <div style={{ display: "flex", margin: "16px 0" }}>
         {isNewPost ? null : (
