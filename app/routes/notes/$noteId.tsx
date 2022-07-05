@@ -1,12 +1,20 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { Button, Group, Paper, ScrollArea } from "@mantine/core";
+import type {
+  ActionFunction,
+  HeadersFunction,
+  LoaderFunction,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useCatch, useLoaderData } from "@remix-run/react";
+import { Form, Link, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import { Trash, Edit } from "tabler-icons-react";
 
 import type { Note } from "~/models/note.server";
 import { deleteNote } from "~/models/note.server";
 import { getNote } from "~/models/note.server";
 import { requireUserId } from "~/server/session.server";
+import { BREAKPOINT } from "~/styles/mantine-styles";
+import { CACHE_CONTROL } from "~/utils/constants";
 
 type LoaderData = {
   note: Note;
@@ -20,7 +28,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!note) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json<LoaderData>({ note });
+  return json<LoaderData>(
+    { note },
+    {
+      headers: {
+        "Cache-Control": CACHE_CONTROL,
+      },
+    }
+  );
+};
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control")!,
+  };
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -36,14 +56,49 @@ export default function NoteDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
   return (
-    <div>
-      <h3>{data.note.title}</h3>
-      <p>{data.note.body}</p>
-      <hr />
-      <Form method="post">
-        <button type="submit">Delete</button>
-      </Form>
-    </div>
+    <>
+      <ScrollArea style={{ height: 760, marginBottom: 16 }}>
+        <Paper
+          className="note-content"
+          shadow="md"
+          p={30}
+          radius="md"
+          sx={{
+            backgroundColor: "#141517",
+            [BREAKPOINT]: {
+              padding: 16,
+            },
+          }}
+          dangerouslySetInnerHTML={{ __html: data.note.body }}
+        ></Paper>
+      </ScrollArea>
+      <Group>
+        <Form method="post">
+          <Button
+            type="submit"
+            color="red"
+            sx={{
+              marginBottom: 8,
+            }}
+            leftIcon={<Trash size={14} />}
+            compact
+          >
+            Delete
+          </Button>
+        </Form>
+        <Link to={`/notes/new?id=${data.note.id}`}>
+          <Button
+            sx={{
+              marginBottom: 8,
+            }}
+            leftIcon={<Edit size={14} />}
+            compact
+          >
+            Edit
+          </Button>
+        </Link>
+      </Group>
+    </>
   );
 }
 

@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@500&family=Merriweather&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
-
 body {
   margin: 0;
   display: flex;
@@ -137,6 +134,10 @@ li[data-tag="H3"] {
 li[data-tag="H3"]:hover a, li[data-tag="H2"]:hover a {
   text-decoration: underline;
   text-decoration-color: #1971c2;
+}
+.mantine-Drawer-root > .mantine-Paper-root {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Code Hike styles */

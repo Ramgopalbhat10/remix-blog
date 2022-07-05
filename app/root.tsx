@@ -29,6 +29,7 @@ import { CACHE_CONTROL } from "~/utils/constants";
 import { useEffect, useRef } from "react";
 import Nprogress from "nprogress";
 import { MetronomeLinks } from "@metronome-sh/react";
+import { Header } from "./layouts/Header";
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: baseStylesheetUrl },
@@ -76,7 +77,8 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
   return { "Cache-Control": loaderHeaders.get("Cache-Control")! };
 };
 export default function App() {
-  const data = useLoaderData();
+  const data = useLoaderData() as LoaderData;
+  const isAdmin = data.user?.email === data.ENV.ADMIN_EMAIL;
   const theme = useMantineTheme();
   theme.colorScheme = "dark";
   const transition = useTransition();
@@ -156,9 +158,14 @@ export default function App() {
         />
         <MantineProvider theme={{ colorScheme: "dark" }}>
           <div style={{ flex: 1 }}>
+            {!location.pathname.includes("categories") &&
+              !location.pathname.includes("notes") && (
+                <Header title="MRGB" isAdmin={isAdmin} />
+              )}
             <Outlet />
           </div>
-          <Footer /> <ScrollToTop />
+          <Footer />
+          <ScrollToTop />
         </MantineProvider>
         <ScrollRestoration /> <Scripts />
         <script

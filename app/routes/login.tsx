@@ -16,7 +16,6 @@ import * as React from "react";
 import { createUserSession, getUserId } from "~/server/session.server";
 import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils/utils";
-import { Header } from "~/layouts/Header";
 import {
   TextInput,
   PasswordInput,
@@ -122,7 +121,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <Header title="MRGB" />
       <main>
         <Container size={420} my={40}>
           <Title

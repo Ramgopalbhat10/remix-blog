@@ -1,0 +1,34 @@
+body {
+  max-width: 100%;
+}
+
+.nav-notes {
+  color: #2196f3;
+  border-bottom: 1px solid #2196f3;
+  font-weight: 500;
+}
+.visually-hidden {
+  color: #2196f3;
+}
+
+.note-content .ql-align-center {
+  margin-top: 0;
+  text-align: center;
+}
+
+img {
+  width: 100%;
+}
+iframe {
+  width: 100%;
+  height: 350px;
+}
+
+/* mantine styles */
+.mantine-ScrollArea-scrollbar {
+  width: 8px !important;
+}
+
+.mantine-ScrollArea-viewport > div {
+  height: 100%;
+}

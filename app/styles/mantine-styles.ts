@@ -1,7 +1,7 @@
 import type { MantineTheme } from "@mantine/core";
 import { createStyles } from "@mantine/core";
 
-export const BREAKPOINT = "@media (max-width: 755px)";
+export const BREAKPOINT = "@media (max-width: 767px)";
 const getTitleStyles = (theme: MantineTheme) => ({
   fontFamily: `Greycliff CF, ${theme.fontFamily}`,
   fontSize: 62,
@@ -60,7 +60,7 @@ export const useStylesHomePage = createStyles((theme) => ({
 export const useStylesFooter = createStyles((theme) => ({
   footer: {
     justifyContent: "center",
-    marginTop: 4,
+    marginTop: 16,
     borderTop: "1px solid #2c2e33",
   },
 }));
@@ -106,6 +106,80 @@ export const useStylesCategories = createStyles((theme, _params, getRef) => ({
 
     [`& .${getRef("iconWrapper")}`]: {
       color: theme.white,
+    },
+  },
+}));
+
+export const useStylesHeaderNav = createStyles((theme) => ({
+  wrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  linksWrapper: {
+    flex: 1,
+    display: "flex",
+    maxWidth: 992,
+    alignItems: "center",
+  },
+  logoTitle: {
+    fontSize: 24,
+    fontWeight: 500,
+    display: "flex",
+    alignItems: "center",
+  },
+  logoAvatar: {
+    position: "relative",
+    left: "-6px",
+    [BREAKPOINT]: {
+      width: 32,
+      height: 32,
+      minWidth: 32,
+    },
+  },
+  navLinks: {
+    fontSize: 16,
+    fontWeight: 400,
+    ":hover": {
+      color: "#2196f3",
+      borderBottom: "1px solid #2196f3",
+    },
+  },
+}));
+
+export const useStylesNotes = createStyles((theme) => ({
+  link: {
+    ...theme.fn.focusStyles(),
+    display: "flex",
+    alignItems: "center",
+    textDecoration: "none",
+    fontSize: theme.fontSizes.sm,
+    color:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[1]
+        : theme.colors.gray[7],
+    padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+    borderRadius: theme.radius.sm,
+    fontWeight: 500,
+
+    "&:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
+      color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    },
+  },
+  linkActive: {
+    "&, &:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.fn.rgba(theme.colors[theme.primaryColor][8], 0.25)
+          : theme.colors[theme.primaryColor][0],
+      color:
+        theme.colorScheme === "dark"
+          ? theme.white
+          : theme.colors[theme.primaryColor][7],
     },
   },
 }));

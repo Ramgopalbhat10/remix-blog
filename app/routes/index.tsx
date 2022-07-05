@@ -1,4 +1,3 @@
-import { Header } from "~/layouts/Header";
 import { Container, Text } from "@mantine/core";
 import { useStylesHomePage } from "~/styles/mantine-styles";
 import type { HeadersFunction } from "@remix-run/node";
@@ -14,7 +13,6 @@ export default function Index() {
   const { classes } = useStylesHomePage();
   return (
     <>
-      <Header title="MRGB" />
       <main>
         <div className={classes.wrapper}>
           <Container size={700} className={classes.inner}>

@@ -43,6 +43,29 @@ export function createNote({
   });
 }
 
+export function updateNote({
+  id,
+  userId,
+  title,
+  body,
+}: Pick<Note, "id" | "body" | "title"> & {
+  userId: User["id"];
+}) {
+  const newNote = {
+    title,
+    body,
+    user: {
+      connect: {
+        id: userId,
+      },
+    },
+  };
+  return prisma.note.update({
+    data: newNote,
+    where: { id },
+  });
+}
+
 export function deleteNote({
   id,
   userId,

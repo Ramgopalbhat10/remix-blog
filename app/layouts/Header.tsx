@@ -2,13 +2,18 @@ import type { User } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import { Avatar, Box, Header as MHeader, Space, Title } from "@mantine/core";
 import logo from "~/assets/images/logo.png";
-import { BREAKPOINT } from "~/styles/mantine-styles";
+import { useStylesHeaderNav } from "~/styles/mantine-styles";
+import { useMediaQuery } from "@mantine/hooks";
+import { Drawer } from "./Drawer";
+import type { getNoteListItems } from "~/models/note.server";
 
 type Props = {
   user?: User;
   title: string;
   isAdmin?: boolean;
   clearCategory?: React.Dispatch<React.SetStateAction<string>>;
+  showDrawer?: boolean;
+  notesList?: Awaited<ReturnType<typeof getNoteListItems>>;
 };
 
 const setResponsiveStyles = (keys: string[], values: string[]) => {
@@ -21,48 +26,41 @@ const setResponsiveStyles = (keys: string[], values: string[]) => {
   };
 };
 
-export function Header({ user, title, isAdmin, clearCategory }: Props) {
+const linkStyles = {
+  fontSize: 16,
+  fontWeight: 400,
+  ":hover": {
+    color: "#2196f3",
+    borderBottom: "1px solid #2196f3",
+  },
+};
+
+export function Header({
+  user,
+  title,
+  isAdmin,
+  clearCategory,
+  showDrawer,
+  notesList,
+}: Props) {
+  const { classes: headerNavClasses } = useStylesHeaderNav();
+  const smallDevices = useMediaQuery("(max-width: 767px)");
+
   return (
     <MHeader
       height={60}
       mb={16}
-      // p="md"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={headerNavClasses.wrapper}
       sx={{
         ...setResponsiveStyles(["padding"], ["16px"]),
       }}
     >
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          maxWidth: 992,
-          alignItems: "center",
-        }}
-      >
-        <Title
-          sx={{
-            fontSize: 24,
-            fontWeight: 500,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+      <div className={headerNavClasses.linksWrapper}>
+        {smallDevices && showDrawer && <Drawer notesList={notesList ?? []} />}
+        <Title className={headerNavClasses.logoTitle}>
           <Avatar
             src={logo}
-            sx={{
-              position: "relative",
-              left: "-6px",
-              [BREAKPOINT]: {
-                width: 32,
-                height: 32,
-                minWidth: 32,
-              },
-            }}
+            className={headerNavClasses.logoAvatar}
             alt="logo"
           />
           <Link to="/">M.RGB</Link>
@@ -70,41 +68,41 @@ export function Header({ user, title, isAdmin, clearCategory }: Props) {
 
         <Box sx={{ flexGrow: 1 }}></Box>
 
-        <Title
-          sx={{
-            fontSize: 16,
-            fontWeight: 400,
-            ":hover": {
-              color: "#2196f3",
-              borderBottom: "1px solid #2196f3",
-            },
-          }}
-          className="nav-posts"
-        >
-          <Link to="/posts" prefetch="intent">
-            posts
-          </Link>
-        </Title>
-        <Space mr="xs" />
-        <Title
-          sx={{
-            fontSize: 16,
-            fontWeight: 400,
-            ":hover": {
-              color: "#2196f3",
-              borderBottom: "1px solid #2196f3",
-            },
-          }}
-          className="nav-categories"
-        >
-          <Link
-            to="/categories"
-            prefetch="intent"
-            onClick={() => clearCategory && clearCategory("")}
-          >
-            categories
-          </Link>
-        </Title>
+        {title === "Notes" ? (
+          <Title sx={linkStyles} className="nav-notes">
+            <Link to="/notes" prefetch="intent">
+              notes
+            </Link>
+          </Title>
+        ) : (
+          <>
+            <Title sx={linkStyles} className="nav-posts">
+              <Link to="/posts" prefetch="intent">
+                posts
+              </Link>
+            </Title>
+            <Space mr="xs" />
+            <Title sx={linkStyles} className="nav-categories">
+              <Link
+                to="/categories"
+                prefetch="intent"
+                onClick={() => clearCategory && clearCategory("")}
+              >
+                categories
+              </Link>
+            </Title>
+            {isAdmin && (
+              <>
+                <Space mr="xs" />
+                <Title sx={linkStyles} className="nav-notes">
+                  <Link to="/notes" prefetch="intent">
+                    notes
+                  </Link>
+                </Title>
+              </>
+            )}
+          </>
+        )}
       </div>
     </MHeader>
   );

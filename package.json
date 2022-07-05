@@ -35,9 +35,10 @@
   "dependencies": {
     "@code-hike/mdx": "^0.6.1-next.0",
     "@codesandbox/sandpack-react": "^1.2.2",
-    "@mantine/core": "^4.2.9",
-    "@mantine/hooks": "^4.2.9",
+    "@mantine/core": "^4.2.12",
+    "@mantine/hooks": "^4.2.12",
     "@mantine/prism": "^4.2.9",
+    "@mantine/rte": "^4.2.12",
     "@mantine/ssr": "^4.2.7",
     "@mapbox/rehype-prism": "^0.8.0",
     "@metronome-sh/express": "^5.5.3",
@@ -74,7 +75,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.17.12",
     "@faker-js/faker": "^6.3.1",
-    "@remix-run/dev": "^1.5.1",
+    "@remix-run/dev": "^1.6.3",
     "@remix-run/eslint-config": "^1.5.1",
     "@tailwindcss/typography": "^0.5.2",
     "@testing-library/cypress": "^8.0.2",
