@@ -1608,7 +1608,7 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@mantine/core@^4.2.12":
+"@mantine/core@^4.2.9":
   version "4.2.12"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-4.2.12.tgz#7c07a352e7f2ea13f693ddd0d1b77d8898593e6c"
   integrity sha512-PZcVUvcSZiZmLR1moKBJFdFIh6a4C+TE2ao91kzTAlH5Qb8t/V3ONbfPk3swHoYr7OSLJQM8vZ7UD5sFDiq0/g==
@@ -1619,7 +1619,7 @@
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
-"@mantine/hooks@^4.2.12":
+"@mantine/hooks@^4.2.9":
   version "4.2.12"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.2.12.tgz#8dfbd23763959b721f5c5c784b3c412bb7c9823a"
   integrity sha512-/2GOsgv1tAUFBXOUV0YBZdDZHj3pHN82Sv1oI/hJMjfIT3ZkGeeiJO8Cw9cBcn76t6caP6Czi3hcuKhjz71O+A==
@@ -1973,7 +1973,7 @@
   resolved "https://registry.yarnpkg.com/@react-hook/passive-layout-effect/-/passive-layout-effect-1.2.1.tgz#c06dac2d011f36d61259aa1c6df4f0d5e28bc55e"
   integrity sha512-IwEphTD75liO8g+6taS+4oqz+nnroocNfWVHWz7j+N+ZO2vYrc6PV1q7GQhuahL0IOR7JccFTsFKQ/mb6iZWAg==
 
-"@remix-run/dev@^1.6.3":
+"@remix-run/dev@^1.5.1":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@remix-run/dev/-/dev-1.6.3.tgz#1e405954119f6540449d29930cb9890503800823"
   integrity sha512-thGNy9usFUEBwrTKp8SzFe6IaoEplb0bZIXqylJw6y2HbS5CCsFoR7s937XIh4Er3tuPHCV09uzy/b1AEpzIaw==
