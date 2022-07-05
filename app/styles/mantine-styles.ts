@@ -60,7 +60,7 @@ export const useStylesHomePage = createStyles((theme) => ({
 export const useStylesFooter = createStyles((theme) => ({
   footer: {
     justifyContent: "center",
-    marginTop: 16,
+    marginTop: 8,
     borderTop: "1px solid #2c2e33",
   },
 }));

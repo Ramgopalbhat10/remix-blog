@@ -1608,7 +1608,7 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@mantine/core@^4.2.9":
+"@mantine/core@^4.2.10":
   version "4.2.12"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-4.2.12.tgz#7c07a352e7f2ea13f693ddd0d1b77d8898593e6c"
   integrity sha512-PZcVUvcSZiZmLR1moKBJFdFIh6a4C+TE2ao91kzTAlH5Qb8t/V3ONbfPk3swHoYr7OSLJQM8vZ7UD5sFDiq0/g==
@@ -1619,19 +1619,19 @@
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
-"@mantine/hooks@^4.2.9":
+"@mantine/hooks@^4.2.10":
   version "4.2.12"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.2.12.tgz#8dfbd23763959b721f5c5c784b3c412bb7c9823a"
   integrity sha512-/2GOsgv1tAUFBXOUV0YBZdDZHj3pHN82Sv1oI/hJMjfIT3ZkGeeiJO8Cw9cBcn76t6caP6Czi3hcuKhjz71O+A==
 
-"@mantine/prism@^4.2.9":
-  version "4.2.10"
-  resolved "https://registry.npmjs.org/@mantine/prism/-/prism-4.2.10.tgz"
-  integrity sha512-W0WZmY2A+tMvvR+2tCY+l2bwlqSacz99s3LivvIcy6v5qQCqbI2nwzpndCIt9kqCYEabo3KfYBi/uhQIwXjvCQ==
+"@mantine/prism@^4.2.10":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-4.2.12.tgz#728169dfad2a05a2bf920ba0bf16acf66fb95460"
+  integrity sha512-zFwkBs0+4kaYnKPWbFaulM6cZGQCJgQzxTzXmZsLoBn5d/3U7pIbm0wX9ZvDoEscpN4YTp4WqvZGYGOMkIjgZw==
   dependencies:
     prism-react-renderer "^1.2.1"
 
-"@mantine/rte@^4.2.12":
+"@mantine/rte@^4.2.10":
   version "4.2.12"
   resolved "https://registry.yarnpkg.com/@mantine/rte/-/rte-4.2.12.tgz#f6c340dc5eb0c79a602474e51587403ac1c5a467"
   integrity sha512-gG0Mm29eHbJcHszLCT/Dv0R3rJWLXM73Bh5ii5q2kr7nY5haRXqFz1Rqb37TnnCofADSolbFZPOkztCBVtgdRA==
@@ -1640,31 +1640,19 @@
     quill-mention "^3.0.8"
     react-quill "2.0.0-beta.4"
 
-"@mantine/ssr@^4.2.7":
-  version "4.2.10"
-  resolved "https://registry.npmjs.org/@mantine/ssr/-/ssr-4.2.10.tgz"
-  integrity sha512-+nq7BzjrJfMucMsEBANR38UHw62b+uVdxgz+vAM5Ky9JM/ukws2x9cJVdN21Mf5oywsAuZqrJR4twgFUqayHww==
+"@mantine/ssr@^4.2.10":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-4.2.12.tgz#86e86243f7c3e010ad4ae0a2f0f6ce6f7154434a"
+  integrity sha512-PhM+nYzKs7ooPgMyJGPrdE0KaBB1T72yln3K/3ydkJBAMb/gl08Gm8gpzInzfn2kB7bdRVNwuF0i8Ba0pDbvJg==
   dependencies:
     "@emotion/cache" "11.7.1"
     "@emotion/react" "11.7.1"
     "@emotion/serialize" "1.0.2"
     "@emotion/server" "11.4.0"
     "@emotion/utils" "1.0.0"
-    "@mantine/styles" "4.2.10"
+    "@mantine/styles" "4.2.12"
     csstype "3.0.9"
     html-react-parser "1.3.0"
-
-"@mantine/styles@4.2.10":
-  version "4.2.10"
-  resolved "https://registry.npmjs.org/@mantine/styles/-/styles-4.2.10.tgz"
-  integrity sha512-dWwCzBLYE8CwPJSPlV3MyIuR4ET3u6O+T+VmxY0lab6w/bqflseNSh9UBIW2AUoIYtxPVDjbZfzeTw32aV8CxA==
-  dependencies:
-    "@emotion/cache" "11.7.1"
-    "@emotion/react" "11.7.1"
-    "@emotion/serialize" "1.0.2"
-    "@emotion/utils" "1.0.0"
-    clsx "^1.1.1"
-    csstype "3.0.9"
 
 "@mantine/styles@4.2.12":
   version "4.2.12"
